@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name="post")
+@Table(name="posts")
 @Data
 public class Post {
 
@@ -15,6 +15,10 @@ public class Post {
 
     @Column (name="content")
     private String content;
+
+    @Enumerated(EnumType.STRING)
+    @Column (name="post_statu")
+    private Statu postStatu;
 
     @Column(name="number_of_likes")
     private int numberOfLikes;

@@ -6,26 +6,35 @@ import lombok.Data;
 import java.util.List;
 
 @Entity
-@Table (name="user")
+@Table (name="users")
 @Data
 public class User {
 
     @Id
-    @Column(name="book_id")
+    @Column(name="user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userId;
+
+    @Column(name="user_name")
+    private String userName;
+
+    @Column(name="profile_name")
+    private String profileName;
 
     @Column(name="eMail")
     private String eMail;
 
-    @OneToMany
+    @Enumerated(EnumType.STRING)
+    @Column (name="user_statu")
+    private Statu userStatu;
+
+    @OneToMany (mappedBy = "content")
     private List<Post> posts;
 
-    @OneToMany
+    @OneToMany (mappedBy = "userName")
     private  List<User> followers;
 
-    @OneToMany
+    @OneToMany (mappedBy = "userName")
     private List<User> followings;
-
 
 }
