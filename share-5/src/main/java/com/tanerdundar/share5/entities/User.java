@@ -24,6 +24,9 @@ public class User {
     @Column(name="eMail")
     private String eMail;
 
+    @Column(name="password")
+    private String password;
+
     @Enumerated(EnumType.STRING)
     @Column (name="user_statu")
     private Statu userStatu;
@@ -36,5 +39,10 @@ public class User {
 
     @OneToMany (mappedBy = "userName")
     private List<User> followings;
+
+    @PrePersist
+    public void prePersist() {
+        this.userStatu = Statu.ACTIVE;
+    }
 
 }
