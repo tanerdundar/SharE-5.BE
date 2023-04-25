@@ -2,10 +2,13 @@ package com.tanerdundar.share5.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @Entity
 @Table(name="posts")
 @Data
+@NoArgsConstructor
 public class Post {
 
     @Id
@@ -23,7 +26,22 @@ public class Post {
     @Column(name="number_of_likes")
     private int numberOfLikes;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    @NonNull
     private User owner;
+
+
+    @PrePersist
+    public void prePersist() {
+        if(this.numberOfLikes>0){
+            this.numberOfLikes=this.numberOfLikes;
+        } else {
+            this.numberOfLikes = 0;
+        }
+
+    }
+
+
 
 }

@@ -42,7 +42,10 @@ public class User {
 
     @PrePersist
     public void prePersist() {
-        this.userStatu = Statu.ACTIVE;
+        if(this.userStatu==Statu.INACTIVE) {
+        }else {
+            this.userStatu = Statu.ACTIVE;
+        }
     }
 
 }
