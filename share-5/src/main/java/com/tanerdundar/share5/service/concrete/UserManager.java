@@ -53,7 +53,6 @@ public class UserManager implements UserService {
         }
     }
 
-
     @Override
     public List<User> getAllActiveUsers() {
         return repository.findByUserStatu(Statu.ACTIVE);
