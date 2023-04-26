@@ -1,9 +1,12 @@
 package com.tanerdundar.share5.service.abstracts;
 
+import com.tanerdundar.share5.entities.Post;
 import com.tanerdundar.share5.entities.User;
 import com.tanerdundar.share5.requests.user.UserCreateRequest;
 import com.tanerdundar.share5.requests.user.UserDeleteRequest;
+import com.tanerdundar.share5.requests.user.UserFollowRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -19,5 +22,11 @@ public interface UserService {
     List<User> getAllUsers();
 
     User getOneUserById(Long userId);
+
+    //------------------------------------------------------------------------------------------------------------------------------
+    public List<Post> getFollowingsPosts( long userId);
+
+
+    //------------------------------------------------------------------------------------------------------------------------------
 
 }

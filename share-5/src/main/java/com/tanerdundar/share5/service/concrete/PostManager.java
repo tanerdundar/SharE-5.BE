@@ -1,6 +1,8 @@
 package com.tanerdundar.share5.service.concrete;
 
+import com.tanerdundar.share5.api.dto.GetOnePostByPostId;
 import com.tanerdundar.share5.dao.PostRepository;
+import com.tanerdundar.share5.dao.UserRepository;
 import com.tanerdundar.share5.entities.Post;
 import com.tanerdundar.share5.entities.User;
 import com.tanerdundar.share5.requests.post.PostCreateRequest;
@@ -15,6 +17,8 @@ import java.util.List;
 public class PostManager implements PostService {
 
     private final PostRepository repository;
+    private final UserRepository userRepository;
+
     private final UserManager manager;
 
     @Override
@@ -28,6 +32,8 @@ public class PostManager implements PostService {
             postToSave.setContent(request.getContent());
             postToSave.setOwner(postOwner);
             postToSave.setPostStatu(postToSave.getOwner().getUserStatu());
+//            postOwner.getPosts().add(postToSave);
+
 
             return repository.save(postToSave);
 
@@ -36,17 +42,29 @@ public class PostManager implements PostService {
     }
 
     @Override
-    public Post getOnePostById(Long postId) {
-        return repository.findById(postId).orElse(null);
+    public GetOnePostByPostId getOnePostById(Long postId) {
+
+        Post post = repository.findById(postId).orElse(null);
+        GetOnePostByPostId myPost = new GetOnePostByPostId();
+        myPost.setPostStatu(post.getPostStatu());
+        myPost.setContent(post.getContent());
+        myPost.setUserId(post.getOwner().getUserId());
+        myPost.setContent(post.getContent());
+
+        return myPost;
     }
 
     @Override
-    public List<Post> getPostsByUserId(long userId) {
-        User postsOwner = manager.getOneUserById(userId);
-        if (postsOwner == null) {
-            return null;
-        }
-        else{
-         return
+    public List<Post> getAllPosts() {
+        return repository.findAll();
     }
+
+    @Override
+    public List<Post> getPostsByUserId(Long userId) {
+        return repository.findByOwnerUserId(userId);
+    }
+
+
+
+
 }

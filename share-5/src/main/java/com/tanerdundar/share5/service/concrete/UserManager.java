@@ -1,14 +1,18 @@
 package com.tanerdundar.share5.service.concrete;
 
+import com.tanerdundar.share5.dao.PostRepository;
 import com.tanerdundar.share5.dao.UserRepository;
+import com.tanerdundar.share5.entities.Post;
 import com.tanerdundar.share5.entities.Statu;
 import com.tanerdundar.share5.entities.User;
 import com.tanerdundar.share5.requests.user.UserCreateRequest;
 import com.tanerdundar.share5.requests.user.UserDeleteRequest;
+import com.tanerdundar.share5.requests.user.UserFollowRequest;
 import com.tanerdundar.share5.service.abstracts.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +21,7 @@ import java.util.Optional;
 public class UserManager implements UserService {
 
     private final UserRepository repository;
+    private final PostRepository postRepository;
 
 
 
@@ -48,6 +53,7 @@ public class UserManager implements UserService {
         }
     }
 
+
     @Override
     public List<User> getAllActiveUsers() {
         return repository.findByUserStatu(Statu.ACTIVE);
@@ -69,5 +75,20 @@ public class UserManager implements UserService {
         }
        return null;
     }
+
+    //------------------------------------------------------------------------------------------------------------------------------
+    @Override
+    public List<Post> getFollowingsPosts(long userId) {
+        User user = repository.findById(userId).orElse(null);
+              // .orElseThrow(() -> new RuntimeException("User not found with id " + userId));
+        List<Post> followingsPosts = new ArrayList<>();
+        for (User following : user.getFollowings()) {
+            followingsPosts.addAll(following.getPosts());
+        }
+        return followingsPosts;
+    }
+    //------------------------------------------------------------------------------------------------------------------------------
+
+
 
 }

@@ -1,5 +1,6 @@
 package com.tanerdundar.share5.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -31,6 +32,7 @@ public class User {
     @Column (name="user_statu")
     private Statu userStatu;
 
+    @JsonIgnore
     @OneToMany (mappedBy = "content")
     private List<Post> posts;
 

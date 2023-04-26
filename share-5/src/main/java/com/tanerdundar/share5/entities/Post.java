@@ -1,5 +1,6 @@
 package com.tanerdundar.share5.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,7 +27,7 @@ public class Post {
     @Column(name="number_of_likes")
     private int numberOfLikes;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     @NonNull
     private User owner;

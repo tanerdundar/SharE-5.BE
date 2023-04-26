@@ -1,11 +1,12 @@
-package com.tanerdundar.share5.controllers;
+package com.tanerdundar.share5.api.controllers;
 
+import com.tanerdundar.share5.entities.Post;
 import com.tanerdundar.share5.entities.User;
 import com.tanerdundar.share5.requests.user.UserCreateRequest;
 import com.tanerdundar.share5.requests.user.UserDeleteRequest;
+import com.tanerdundar.share5.requests.user.UserFollowRequest;
 import com.tanerdundar.share5.service.abstracts.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class UserController {
         return service.createOneUser(request);
     }
 
-    @PutMapping("{userId}")
+    @PutMapping("/{userId}")
     public User deleteOneUserById(@PathVariable Long userId, @RequestBody UserDeleteRequest request) {
         return service.deleteOneUserById(userId,request);
     }
@@ -35,9 +36,20 @@ public class UserController {
     public List<User> getAllUsers() {
         return service.getAllUsers();
     }
-    @GetMapping("{userId}")
+    @GetMapping("/{userId}")
     public User getOneUser(@PathVariable Long userId){
         return service.getOneUserById(userId);
-
     }
+
+
+
+
+    //------------------------------------------------------------------------------------------------------------------------------
+    @GetMapping("/{userId}/followings/posts")
+    public List<Post> getFollowingsPosts(@PathVariable long userId) {
+        return service.getFollowingsPosts(userId);
+    }
+
+    //------------------------------------------------------------------------------------------------------------------------------
+
 }
