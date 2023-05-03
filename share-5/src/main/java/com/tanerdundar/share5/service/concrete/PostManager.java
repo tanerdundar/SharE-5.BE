@@ -21,48 +21,49 @@ public class PostManager implements PostService {
 
     private final UserManager manager;
 
-    @Override
-    public Post createOnePost(PostCreateRequest request,User user) {
-        User postOwner = manager.getOneUserById(user.getUserId());
-        if (postOwner == null) {
-            return null;
-        }
-        else{
-            Post postToSave = new Post();
-            postToSave.setContent(request.getContent());
-            postToSave.setOwner(postOwner);
-            postToSave.setPostStatu(postToSave.getOwner().getUserStatu());
+//    @Override
+//    public Post createOnePost(PostCreateRequest request,User user) {
+//        User postOwner = manager.getOneUserById(user.getUserId());
+//        if (postOwner == null) {
+//            return null;
+//        }
+//        else{
+//            Post postToSave = new Post();
+//            postToSave.setContent(request.getContent());
+//            postToSave.setOwner(postOwner);
+//            postToSave.setPostStatu(postToSave.getOwner().getUserStatu());
 //            postOwner.getPosts().add(postToSave);
-
-
-            return repository.save(postToSave);
-
-        }
-
-    }
-
-    @Override
-    public GetOnePostByPostId getOnePostById(Long postId) {
-
-        Post post = repository.findById(postId).orElse(null);
-        GetOnePostByPostId myPost = new GetOnePostByPostId();
-        myPost.setPostStatu(post.getPostStatu());
-        myPost.setContent(post.getContent());
-        myPost.setUserId(post.getOwner().getUserId());
-        myPost.setContent(post.getContent());
-
-        return myPost;
-    }
-
-    @Override
-    public List<Post> getAllPosts() {
-        return repository.findAll();
-    }
-
-    @Override
-    public List<Post> getPostsByUserId(Long userId) {
-        return repository.findByOwnerUserId(userId);
-    }
+//            postOwner.getPosts().add(new Post());
+//            userRepository.save(postOwner);
+//
+//            return repository.save(postToSave);
+//
+//        }
+//
+//    }
+//
+//    @Override
+//    public GetOnePostByPostId getOnePostById(Long postId) {
+//
+//        Post post = repository.findById(postId).orElse(null);
+//        GetOnePostByPostId myPost = new GetOnePostByPostId();
+//        myPost.setPostStatu(post.getPostStatu());
+//        myPost.setContent(post.getContent());
+//        myPost.setUserId(post.getOwner().getUserId());
+//        myPost.setContent(post.getContent());
+//
+//        return myPost;
+//    }
+//
+//    @Override
+//    public List<Post> getAllPosts() {
+//        return repository.findAll();
+//    }
+//
+//    @Override
+//    public List<Post> getPostsByUserId(Long userId) {
+//        return repository.findByOwnerUserId(userId);
+//    }
 
 
 

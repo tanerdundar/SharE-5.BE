@@ -21,25 +21,25 @@ public class PostContoller {
     private final PostService service;
     private final PostManager manager;
 
-    @PostMapping("/{userId}")
-    public Post createPost(@RequestBody PostCreateRequest request, User user) {
-        return service.createOnePost(request,user);
-    }
-
-    @GetMapping("/{postId}")
-    public GetOnePostByPostId getOnePostByPostId (@PathVariable Long postId){
-        return service.getOnePostById(postId);
-    }
-
-    @GetMapping
-    public List<Post> getAllPosts() {
-
-        return service.getAllPosts();
-    }
-
-    @GetMapping("/{userId}/posts")
-    public List<Post> getPostsByUserId(@PathVariable Long userId) {
-        return manager.getPostsByUserId(userId);
-    }
+//    @PostMapping("/{userId}")
+//    public Post createPost(@RequestBody PostCreateRequest request, User user) {
+//        return service.createOnePost(request,user);
+//    }
+//
+//    @GetMapping("/{postId}")
+//    public GetOnePostByPostId getOnePostByPostId (@PathVariable Long postId){
+//        return service.getOnePostById(postId);
+//    }
+//
+//    @GetMapping
+//    public List<Post> getAllPosts() {
+//
+//        return service.getAllPosts();
+//    }
+//
+//    @GetMapping("/{userId}/posts")
+//    public List<Post> getPostsByUserId(@PathVariable Long userId) {
+//        return manager.getPostsByUserId(userId);
+//    }
 
 }

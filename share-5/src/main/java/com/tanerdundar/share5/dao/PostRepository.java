@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post,Long> {
 
-List<Post> findByOwnerUserId(Long userId);
+//List<Post> findByOwnerUserId(Long userId);
 
 }

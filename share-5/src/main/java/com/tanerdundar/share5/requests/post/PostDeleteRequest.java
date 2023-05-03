@@ -4,5 +4,5 @@ import com.tanerdundar.share5.entities.Statu;
 
 public class PostDeleteRequest {
 
-    private Statu postStatu;
+//    private Statu postStatu;
 }

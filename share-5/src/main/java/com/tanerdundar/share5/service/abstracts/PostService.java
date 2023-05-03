@@ -10,10 +10,10 @@ import java.util.List;
 
 @Service
 public interface PostService {
-    Post createOnePost(PostCreateRequest request, User user);
-    GetOnePostByPostId getOnePostById(Long postId);
-
-    List<Post> getAllPosts();
-
-    List<Post> getPostsByUserId(Long userId);
+//    Post createOnePost(PostCreateRequest request, User user);
+//    GetOnePostByPostId getOnePostById(Long postId);
+//
+//    List<Post> getAllPosts();
+//
+//    List<Post> getPostsByUserId(Long userId);
 }

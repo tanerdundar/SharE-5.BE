@@ -9,9 +9,9 @@ import lombok.NonNull;
 @Data
 public class PostCreateRequest {
 
-    private long postId;
-    private String content;
-    private Statu postStatu;
-    private int numberOfLikes;
-    private User owner;
+//    private long postId;
+//    private String content;
+//    private Statu postStatu;
+//    private int numberOfLikes;
+//    private long userId;
 }

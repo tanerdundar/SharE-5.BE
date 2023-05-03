@@ -6,5 +6,5 @@ import java.util.List;
 
 public class UserFollowRequest {
 
-    private List<User> followings;
+//    private List<User> followings;
 }

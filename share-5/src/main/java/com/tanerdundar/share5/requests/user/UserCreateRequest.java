@@ -11,14 +11,16 @@ import java.util.List;
 @Data
 public class UserCreateRequest {
 
-
-    private long userId;
     private String userName;
-    private String profileName;
     private String eMail;
     private String password;
-    private Statu userStatu;
-    private List<Post> posts;
-    private  List<User> followers;
-    private List<User> followings;
+
+    public User createOneUser() {
+        User newUser = new User();
+        newUser.setUserName(this.userName);
+        newUser.setEMail(this.eMail);
+        newUser.setPassword(this.password);
+        return newUser;
+    }
+
 }

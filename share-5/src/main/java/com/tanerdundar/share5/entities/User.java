@@ -32,7 +32,7 @@ public class User {
     @Column (name="user_statu")
     private Statu userStatu;
 
-    @JsonIgnore
+   // @JsonIgnore
     @OneToMany (mappedBy = "content")
     private List<Post> posts;
 
