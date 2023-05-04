@@ -7,6 +7,7 @@ import com.tanerdundar.share5.dao.PostRepository;
 import com.tanerdundar.share5.dao.UserRepository;
 import com.tanerdundar.share5.entities.Post;
 import com.tanerdundar.share5.entities.User;
+import com.tanerdundar.share5.requests.user.UserCreateRequest;
 import com.tanerdundar.share5.service.abstracts.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -52,25 +53,46 @@ public class UserManager implements UserService {
     @Override
     public User getOneUserByUserId(long userId) {
         return userRepository.findById(userId).orElseThrow(()-> new UserException());
-
         }
-
+    @Override
+    public User getOneActiveUserByUserId(long userId) {
+        return  getOneActiveUserById(userId);
+    }
     @Override
     public User getOneUserByPostId(long postId) {
         Post post = postRepository.findById(postId).orElseThrow(()-> new PostException());
-        return userRepository.findById(post.getOwner().getUserId()).orElseThrow(()-> new UserException());
-
+        return getOneActiveUserById(post.getOwner().getUserId());
     }
-
-    // TODO findById yerine getOneUser kullan
     @Override
     public List<User> getFollowingsByUserId(long userId) {
-        User foundUser = userRepository.findById(userId).orElseThrow(()-> new UserException());
-        if(foundUser.getUserStatu()==Statu.ACTIVE) {
-            List<User> followingsAll = foundUser.getFollowings();
-            return getResponseEntity(followingsAll);
-        } throw new UserException();
+         User foundUser = getOneActiveUserById(userId);
+         List<User> followingsAll = foundUser.getFollowings();
+         return getResponseEntity(followingsAll);
+    }
+    @Override
+    public List<User> getFollowersByUserId(long userId) {
+         User foundUser = getOneActiveUserById(userId);
+         List<User> followersAll  = foundUser.getFollowers();
+         return getResponseEntity(followersAll);
+    }
 
+    @Override
+    public List<User> getAllActiveUsers() {
+        List<User> allUsers=userRepository.findAll();
+        return getResponseEntity(allUsers);
+    }
+
+    // TODO learn Query
+
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public User createOneUser(UserCreateRequest request) {
+        User newUser = request.createOneUser();
+        return userRepository.save(newUser);
     }
 
     private List<User> getResponseEntity(List<User> followingsAll) {
@@ -83,30 +105,11 @@ public class UserManager implements UserService {
         return followingsActiveUsers;
     }
 
-    @Override
-    public List<User> getFollowersByUserId(long userId) {
-        User foundUser = userRepository.findById(userId).orElseThrow(()-> new UserException());
-        if(foundUser.getUserStatu()==Statu.ACTIVE){
-            List<User> followersAll  = foundUser.getFollowers();
-            return getResponseEntity(followersAll);
-        } else {
-            throw new UserException();
-        }
-
-    }
-
-    @Override
-    public List<User> getAllActiveUsers() {
-        List<User> allUsers=userRepository.findAll();
-        return getResponseEntity(allUsers);
-    }
-
-    // TODO Query i öğren
-
-    @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-
+    private User getOneActiveUserById(long userId) {
+        User returnUser = userRepository.findById(userId).orElseThrow(()-> new UserException()) ;
+        if(returnUser.getUserStatu()==Statu.ACTIVE) {
+            return returnUser;
+        } else throw new UserException("Deleted user..");
     }
 }
 

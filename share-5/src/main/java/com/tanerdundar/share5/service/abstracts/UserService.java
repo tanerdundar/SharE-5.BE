@@ -18,6 +18,8 @@ public interface UserService {
 
     User getOneUserByUserId(long userId);
 
+    User getOneActiveUserByUserId(long userId);
+
     User getOneUserByPostId(long postId);
 
     List<User> getFollowingsByUserId(long userId);
@@ -27,6 +29,8 @@ public interface UserService {
     List<User> getAllActiveUsers();
 
     List<User> getAllUsers();
+
+    User createOneUser(UserCreateRequest request);
 
 
 //    User createOneUser(UserCreateRequest request);

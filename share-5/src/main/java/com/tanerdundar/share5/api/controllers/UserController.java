@@ -19,15 +19,14 @@ public class UserController {
 
     private final UserService userService;
 
-//    @PostMapping
-//    public ResponseEntity createOneUser(@RequestBody UserCreateRequest request) {
-//        User user = userService.createOneUser(request);
-//        return ResponseEntity.ok(user);
-//    }
-
     @GetMapping("/{userId}")
     public ResponseEntity getOneUserByUserId(@PathVariable long userId) {
         User user = userService.getOneUserByUserId(userId);
+        return ResponseEntity.ok(user);
+    }
+    @GetMapping("/{userId}/active")
+    public ResponseEntity getOneActiveUserByUserId(@PathVariable long userId) {
+        User user = userService.getOneActiveUserByUserId(userId);
         return ResponseEntity.ok(user);
     }
     @GetMapping("/{postId}/post")
@@ -45,7 +44,6 @@ public class UserController {
         List<User> followers = userService.getFollowersByUserId(userId);
         return ResponseEntity.ok(followers);
     }
-
     @GetMapping("/actives")
     public ResponseEntity getAllActiveUsers(){
         List<User> allActiveUsers= userService.getAllActiveUsers();
@@ -55,6 +53,11 @@ public class UserController {
     public ResponseEntity getAllUsers(){
         List<User> allUsers= userService.getAllUsers();
         return ResponseEntity.ok(allUsers);
+    }
+    @PostMapping
+    public ResponseEntity createOneUser(@RequestBody UserCreateRequest request) {
+       User user= userService.createOneUser(request);
+        return ResponseEntity.ok(user);
     }
 
     //---------------------------------------------------------------------------------------------------------------------------------
