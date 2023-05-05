@@ -2,6 +2,7 @@ package com.tanerdundar.share5.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userId;
 
+    @Size(min=5,message = "User name needs at least 5 character!.")
     @Column(name="user_name")
     private String userName;
 
@@ -25,6 +27,7 @@ public class User {
     @Column(name="eMail")
     private String eMail;
 
+    @Size(min=8,message = "Password needs at least 8 character!.")
     @Column(name="password")
     private String password;
 

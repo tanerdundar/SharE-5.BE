@@ -2,6 +2,7 @@ package com.tanerdundar.share5.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -17,6 +18,7 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long postId;
 
+    @Size(min=1,message = "Content cannot be blank.")
     @Column (name="content")
     private String content;
 
@@ -39,6 +41,10 @@ public class Post {
             this.numberOfLikes=this.numberOfLikes;
         } else {
             this.numberOfLikes = 0;
+        }
+        if(this.postStatu==Statu.INACTIVE) {
+        }else {
+            this.postStatu = Statu.ACTIVE;
         }
 
     }

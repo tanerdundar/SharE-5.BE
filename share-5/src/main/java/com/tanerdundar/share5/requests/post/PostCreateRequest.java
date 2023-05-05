@@ -1,5 +1,8 @@
 package com.tanerdundar.share5.requests.post;
 
+import com.tanerdundar.share5.dao.PostRepository;
+import com.tanerdundar.share5.dao.UserRepository;
+import com.tanerdundar.share5.entities.Post;
 import com.tanerdundar.share5.entities.Statu;
 import com.tanerdundar.share5.entities.User;
 import jakarta.persistence.*;
@@ -9,9 +12,15 @@ import lombok.NonNull;
 @Data
 public class PostCreateRequest {
 
-//    private long postId;
-//    private String content;
-//    private Statu postStatu;
-//    private int numberOfLikes;
-//    private long userId;
+
+
+    private String content;
+    private long ownerId;
+
+
+    public Post createOnePost() {
+        Post newPost = new Post();
+        newPost.setContent(this.content);
+    return newPost;
+    }
 }

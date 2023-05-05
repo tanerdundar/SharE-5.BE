@@ -1,16 +1,14 @@
 package com.tanerdundar.share5.api.controllers;
 
-import com.tanerdundar.share5.entities.Post;
 import com.tanerdundar.share5.entities.User;
 import com.tanerdundar.share5.requests.user.UserCreateRequest;
-import com.tanerdundar.share5.requests.user.UserDeleteRequest;
 import com.tanerdundar.share5.service.abstracts.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("api/users")
@@ -55,45 +53,19 @@ public class UserController {
         return ResponseEntity.ok(allUsers);
     }
     @PostMapping
-    public ResponseEntity createOneUser(@RequestBody UserCreateRequest request) {
+    public ResponseEntity createOneUser(@Valid @RequestBody UserCreateRequest request) {
        User user= userService.createOneUser(request);
         return ResponseEntity.ok(user);
     }
-
-    //---------------------------------------------------------------------------------------------------------------------------------
-
-//    @PostMapping
-//    public User createOneUser(@RequestBody UserCreateRequest request) {
-//        return service.createOneUser(request);
-//    }
-//
+    @DeleteMapping("/{userId}")
+    public void deleteOneUserByUserIdFromDB(@PathVariable long userId) {
+        userService.deleteOneUserByUserIdFromDB(userId);
+    }
 //    @PutMapping("/{userId}")
-//    public User deleteOneUserById(@PathVariable Long userId, @RequestBody UserDeleteRequest request) {
-//        return service.deleteOneUserById(userId,request);
-//    }
-//
-//    @GetMapping("/all")
-//    public List<User> getAllActiveUsers() {
-//         return service.getAllActiveUsers();
-//    }
-//    @GetMapping("/whole")
-//    public List<User> getAllUsers() {
-//        return service.getAllUsers();
-//    }
-//    @GetMapping("/{userId}")
-//    public User getOneUser(@PathVariable Long userId){
-//        return service.getOneUserById(userId);
+//    public ResponseEntity toInactiveAUser(@PathVariable long userId, @RequestBody  UserToInactiveRequest request){
+//        User user = userService.toInactiveAUser(userId,request);
+//        return ResponseEntity.ok(user);
 //    }
 
-
-
-
-    //------------------------------------------------------------------------------------------------------------------------------
-//    @GetMapping("/{userId}/followings/posts")
-//    public List<Post> getFollowingsPosts(@PathVariable long userId) {
-//        return service.getFollowingsPosts(userId);
-//    }
-
-    //------------------------------------------------------------------------------------------------------------------------------
 
 }

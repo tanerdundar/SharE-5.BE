@@ -3,8 +3,8 @@ package com.tanerdundar.share5.service.abstracts;
 import com.tanerdundar.share5.entities.Post;
 import com.tanerdundar.share5.entities.User;
 import com.tanerdundar.share5.requests.user.UserCreateRequest;
-import com.tanerdundar.share5.requests.user.UserDeleteRequest;
 import com.tanerdundar.share5.requests.user.UserFollowRequest;
+import com.tanerdundar.share5.requests.user.UserToInactiveRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,7 +14,6 @@ import java.util.Optional;
 
 @Service
 public interface UserService {
-//    User createOneUser(UserCreateRequest request);
 
     User getOneUserByUserId(long userId);
 
@@ -32,21 +31,9 @@ public interface UserService {
 
     User createOneUser(UserCreateRequest request);
 
+    void deleteOneUserByUserIdFromDB(long userId);
 
-//    User createOneUser(UserCreateRequest request);
-//
-//    User deleteOneUserById(Long userId, UserDeleteRequest request);
-//
-//    List<User> getAllActiveUsers();
-//
-//    List<User> getAllUsers();
-//
-//    User getOneUserById(Long userId);
+ //   User toInactiveAUser(long userId, UserToInactiveRequest request);
 
-//    //------------------------------------------------------------------------------------------------------------------------------
-//    public List<Post> getFollowingsPosts( long userId);
-
-
-    //------------------------------------------------------------------------------------------------------------------------------
 
 }

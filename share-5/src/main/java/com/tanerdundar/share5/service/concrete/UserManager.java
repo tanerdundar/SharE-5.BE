@@ -8,10 +8,14 @@ import com.tanerdundar.share5.dao.UserRepository;
 import com.tanerdundar.share5.entities.Post;
 import com.tanerdundar.share5.entities.User;
 import com.tanerdundar.share5.requests.user.UserCreateRequest;
+import com.tanerdundar.share5.requests.user.UserToInactiveRequest;
 import com.tanerdundar.share5.service.abstracts.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,32 +27,6 @@ public class UserManager implements UserService {
 
     private final UserRepository userRepository;
     private final PostRepository postRepository;
-
-
-//    @Override
-//    public User createOneUser(UserCreateRequest request) {
-//            List<User> allUsers = userRepository.findAll();
-//            User foundUser;
-//            for()
-//
-//
-//
-//            for (int i=0;i< allUsers.size();i++) {
-//                if(request.getUserName()==allUsers.get(i).getUserName()){
-//                    throw new UserException("Existing user!.. Please type a new name.");
-//                } else if(request.getEMail()==allUsers.get(i).getEMail()){
-//                    throw new UserException("Existing email!.. Please type a new email.");
-//                }else if(request.getUserName().length()<5) {
-//                    throw new UserException("At least 5 character please...");
-//                } else {
-//                    User userToCreate = new User();
-//                    userToCreate.setUserName(request.getUserName());
-//                    userToCreate.setPassword(request.getPassword());
-//                    userToCreate.setEMail(request.getEMail());
-//                    return userRepository.save(userToCreate);
-//                }
-//            }
-//        }
 
     @Override
     public User getOneUserByUserId(long userId) {
@@ -89,11 +67,44 @@ public class UserManager implements UserService {
         return userRepository.findAll();
     }
 
+    //TODO learn Query
+    //TODO Someone may use an existing inactive user name!!!
     @Override
     public User createOneUser(UserCreateRequest request) {
-        User newUser = request.createOneUser();
-        return userRepository.save(newUser);
+        List<User> users = userRepository.findAll();
+        for (User value : users) {
+            if (request.getUserName().equals(value.getUserName())) {
+                if (value.getUserStatu() == Statu.ACTIVE) {
+                    throw new UserException("Existing user name!...");
+                }
+            }
+        }
+        if(isValidEmail(request.getEMail())) {
+            for (User user : users) {
+                if (request.getEMail().equals(user.getEMail())) {
+                    throw new UserException("Existing email adress...");
+                }
+            }
+        } else{
+            throw new UserException("Please type valid email adress...");
+        }
+        return  userRepository.save(request.createOneUser());
     }
+
+    @Override
+    public void deleteOneUserByUserIdFromDB(long userId) {
+        userRepository.deleteById(userId);
+    }
+
+
+    //TODO user ve post arasındaki bağlantı kurulacak
+//    @Override
+//    public User toInactiveAUser(long userId, UserToInactiveRequest request) {
+//        User updateUser = getOneUserByUserId(userId);
+//        List<Post> userPosts =
+//
+//        return null;
+//    }
 
     private List<User> getResponseEntity(List<User> followingsAll) {
         List<User> followingsActiveUsers = new ArrayList<>();
@@ -111,71 +122,18 @@ public class UserManager implements UserService {
             return returnUser;
         } else throw new UserException("Deleted user..");
     }
+    private boolean isValidEmail(String email) {
+        boolean isValid = true;
+        try {
+            InternetAddress internetAddress = new InternetAddress(email);
+            internetAddress.validate();
+        } catch (AddressException ex) {
+            isValid = false;
+        }
+        return isValid;
+    }
+
 }
-
-
-//    @Override
-//    public User createOneUser(UserCreateRequest request) {
-//        User userToSave = new User();
-//
-//        userToSave.setUserName(request.getUserName());
-//        userToSave.setPassword(request.getPassword());
-//        userToSave.setEMail(request.getEMail());
-//        userToSave.setProfileName(request.getProfileName());
-//        userToSave.setPosts(request.getPosts());
-//        userToSave.setFollowers(request.getFollowers());
-//        userToSave.setFollowings(request.getFollowings());
-//
-//        return repository.save(userToSave);
-//    }
-
-//    @Override
-//    public User deleteOneUserById(Long userId, UserDeleteRequest request) {
-//        Optional<User> user =repository.findById(userId);
-//        if(user.isPresent()) {
-//        User userToDelete =user.get();
-//        userToDelete.setUserStatu(Statu.INACTIVE);
-//
-//        return repository.save(userToDelete);
-//        } else {
-//            return null;
-//        }
-//    }
-//
-//    @Override
-//    public List<User> getAllActiveUsers() {
-//        return repository.findByUserStatu(Statu.ACTIVE);
-//    }
-//    @Override
-//    public List<User> getAllUsers() {
-//        return repository.findAll();
-//    }
-//
-//    @Override
-//    public User getOneUserById(Long userId) {
-//
-//        Optional<User> activeCheck = repository.findById(userId);
-//        if(activeCheck.isPresent()) {
-//            User user = activeCheck.get();
-//            if(user.getUserStatu()==Statu.ACTIVE) {
-//                return user;
-//            }
-//        }
-//       return null;
-//    }
-
-    //------------------------------------------------------------------------------------------------------------------------------
-//    @Override
-//    public List<Post> getFollowingsPosts(long userId) {
-//        User user = repository.findById(userId).orElse(null);
-//              // .orElseThrow(() -> new RuntimeException("User not found with id " + userId));
-//        List<Post> followingsPosts = new ArrayList<>();
-//        for (User following : user.getFollowings()) {
-//            followingsPosts.addAll(following.getPosts());
-//        }
-//        return followingsPosts;
-//    }
-    //------------------------------------------------------------------------------------------------------------------------------
 
 
 

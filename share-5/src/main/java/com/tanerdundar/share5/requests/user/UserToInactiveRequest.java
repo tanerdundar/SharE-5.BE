@@ -1,8 +1,11 @@
 package com.tanerdundar.share5.requests.user;
 
 import com.tanerdundar.share5.entities.Statu;
+import lombok.Data;
 
-public class UserDeleteRequest {
+@Data
+public class UserToInactiveRequest {
 
-//    private Statu userStatu;
+
+    private Statu userStatu;
 }
