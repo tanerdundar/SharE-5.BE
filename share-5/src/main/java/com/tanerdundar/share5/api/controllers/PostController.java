@@ -2,6 +2,7 @@ package com.tanerdundar.share5.api.controllers;
 
 import com.tanerdundar.share5.api.dto.GetOnePostByPostId;
 import com.tanerdundar.share5.entities.Post;
+import com.tanerdundar.share5.entities.Statu;
 import com.tanerdundar.share5.entities.User;
 import com.tanerdundar.share5.requests.post.PostCreateRequest;
 import com.tanerdundar.share5.service.abstracts.PostService;
@@ -48,8 +49,8 @@ public class PostController {
         return ResponseEntity.ok(posts);
     }
     @GetMapping("/{userId}/actives")
-    public ResponseEntity getActivePostsByUserId(@PathVariable long userId) {
-        List<Post> posts = postService.getAllActivePostsByUserId(userId);
+    public ResponseEntity findAllByOwner_UserIdAndAndPostStatu(@PathVariable long userId, Statu statu) {
+        List<Post> posts = postService.findAllByOwner_UserIdAndAndPostStatu(userId,statu);
         return ResponseEntity.ok(posts);
     }
     @GetMapping("/{userId}/allFollowingPosts")

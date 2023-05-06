@@ -48,13 +48,9 @@ public class PostManager implements PostService {
         return postRepository.findAllByOwnerUserId(userId);
     }
     @Override
-    public List<Post> getAllActivePostsByUserId(long userId) {
-        User postOwner = userRepository.findById(userId).orElseThrow(()-> new UserException());
-        if(postOwner.getUserStatu()==Statu.ACTIVE){
-            List<Post> usersPosts = postOwner.getPosts();
-            return getResponseEntity(usersPosts);
-        } else throw new UserException();
-
+    public List<Post> findAllByOwner_UserIdAndAndPostStatu(long userId, Statu statu) {
+        statu=Statu.ACTIVE;
+        return postRepository.findAllByOwner_UserIdAndAndPostStatu(userId,statu);
     }
 
     @Override
@@ -74,9 +70,6 @@ public class PostManager implements PostService {
         User postOwner = userRepository.findById(userId).orElseThrow(()-> new UserException());
         Post newPost = request.createOnePost();
         newPost.setOwner(postOwner);
-        List<Post> userPosts= postOwner.getPosts();
-        userPosts.add(newPost);
-        postOwner.setPosts(userPosts);
         return postRepository.save(newPost);
     }
 
@@ -90,10 +83,12 @@ public class PostManager implements PostService {
     }
 
     private List<Post> getResponseEntity(List<Post> allPosts) {
+        System.out.println("çalıştı");
         List<Post> activePosts = new ArrayList<>();
         for (Post post : allPosts) {
             if (post.getPostStatu() == Statu.ACTIVE) {
                 activePosts.add(post);
+                System.out.println("çalıştı22");
             }
         }
         return activePosts;

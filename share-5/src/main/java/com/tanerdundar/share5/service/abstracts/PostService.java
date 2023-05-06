@@ -1,6 +1,7 @@
 package com.tanerdundar.share5.service.abstracts;
 
 import com.tanerdundar.share5.entities.Post;
+import com.tanerdundar.share5.entities.Statu;
 import com.tanerdundar.share5.requests.post.PostCreateRequest;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +19,7 @@ public interface PostService {
     List<Post> getAllActivePosts();
 
     List<Post> findAllByOwnerUserId(long userId);
-
-    List<Post> getAllActivePostsByUserId(long userId);
-
+    List<Post> findAllByOwner_UserIdAndAndPostStatu(long userId, Statu statu);
     List<Post> getAllFollowingsPosts(long userId);
 
     List<Post> getAllFollowingsActivePosts(long userId);
