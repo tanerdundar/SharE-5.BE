@@ -1,6 +1,5 @@
 package com.tanerdundar.share5.api.controllers;
 
-import com.tanerdundar.share5.api.dto.GetOnePostByPostId;
 import com.tanerdundar.share5.entities.Post;
 import com.tanerdundar.share5.entities.Statu;
 import com.tanerdundar.share5.entities.User;

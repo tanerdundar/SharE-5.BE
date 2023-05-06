@@ -2,6 +2,7 @@ package com.tanerdundar.share5.api.controllers;
 
 import com.tanerdundar.share5.entities.User;
 import com.tanerdundar.share5.requests.user.UserCreateRequest;
+import com.tanerdundar.share5.service.abstracts.FollowService;
 import com.tanerdundar.share5.service.abstracts.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final FollowService followService;
 
     @GetMapping("/{userId}")
     public ResponseEntity getOneUserByUserId(@PathVariable long userId) {
@@ -34,6 +36,7 @@ public class UserController {
     }
     @GetMapping("/{userId}/followings")
     public ResponseEntity getAllFollowingsByUserId(@PathVariable long userId) {
+       // List<Integer> followingsId= followService.get
         List<User> followings = userService.getFollowingsByUserId(userId);
         return ResponseEntity.ok(followings);
     }

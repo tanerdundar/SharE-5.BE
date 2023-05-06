@@ -15,8 +15,6 @@ public class PostCreateRequest {
 
 
     private String content;
-    private long ownerId;
-
 
     public Post createOnePost() {
         Post newPost = new Post();
