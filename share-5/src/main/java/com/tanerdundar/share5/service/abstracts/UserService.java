@@ -21,19 +21,31 @@ public interface UserService {
 
     User getOneUserByPostId(long postId);
 
-    List<User> getFollowingsByUserId(long userId);
+    User getOneActiveUserByPostId(long postId);
 
-    List<User> getFollowersByUserId(long userId);
+    User getOneUserByFollowIdAsFollower(long followId);
+
+    User getOneActiveUserByFollowIdAsFollower(long followId);
+
+    User getOneUserByFollowIdAsFollowing(long followId);
+
+    User getOneActiveUserByFollowIdAsFollowing(long followId);
+
+    List<User> getAllUsers();
 
     List<User> getAllActiveUsers();
 
-    List<User> getAllUsers();
+    List<User> getAllFollowersByUserId(long userId);
+    List<User> getAllActiveFollowersByUserId(long userId);
+
+    List<User> getAllFollowingsByUserId(long userId);
+    List<User> getAllActiveFollowingsByUserId(long userId);
+
+    //-----------------------------------------------------------------------------------
 
     User createOneUser(UserCreateRequest request);
 
     void deleteOneUserByUserIdFromDB(long userId);
-
- //   User toInactiveAUser(long userId, UserToInactiveRequest request);
 
 
 }

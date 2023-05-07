@@ -3,6 +3,7 @@ package com.tanerdundar.share5.service.concrete;
 import com.tanerdundar.share5.dao.FollowRepository;
 import com.tanerdundar.share5.entities.Follow;
 import com.tanerdundar.share5.entities.Statu;
+import com.tanerdundar.share5.exceptions.FollowException;
 import com.tanerdundar.share5.exceptions.PostException;
 import com.tanerdundar.share5.exceptions.UserException;
 import com.tanerdundar.share5.dao.PostRepository;
@@ -44,25 +45,44 @@ public class UserManager implements UserService {
         Post post = postRepository.findById(postId).orElseThrow(()-> new PostException());
         return getOneActiveUserById(post.getOwner().getUserId());
     }
+
     @Override
-    public List<User> getFollowingsByUserId(long userId) {
-        List<Follow> follows = followRepository.findAllByFollower_UserId(userId);
-        List<User> followingUsers= new ArrayList<>();
-        for(int i =0;i< follows.size();i++) {
-            User foundUser = follows.get(i).getFollowing();
-            followingUsers.add(foundUser);
-        }
-         return getResponseEntity(followingUsers);
+    public User getOneActiveUserByPostId(long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(()-> new PostException());
+        return getOneActiveUserById(post.getOwner().getUserId());
     }
+
     @Override
-    public List<User> getFollowersByUserId(long userId) {
-        List<Follow> follows = followRepository.findAllByFollowing_UserId(userId);
-        List<User> followingUsers= new ArrayList<>();
-        for(int i =0;i< follows.size();i++) {
-            User foundUser = follows.get(i).getFollower();
-            followingUsers.add(foundUser);
-        }
-        return getResponseEntity(followingUsers);
+    public User getOneUserByFollowIdAsFollower(long followId) {
+        Follow follow = followRepository.findById(followId).orElseThrow(()-> new FollowException());
+        User user = follow.getFollower();
+        return user;
+    }
+
+    @Override
+    public User getOneActiveUserByFollowIdAsFollower(long followId) {
+        Follow follow = followRepository.findById(followId).orElseThrow(()-> new FollowException());
+        User user = follow.getFollower();
+        return getOneActiveUserById(user.getUserId());
+    }
+
+    @Override
+    public User getOneUserByFollowIdAsFollowing(long followId) {
+        Follow follow = followRepository.findById(followId).orElseThrow(()-> new FollowException());
+        User user = follow.getFollowing();
+        return user;
+    }
+
+    @Override
+    public User getOneActiveUserByFollowIdAsFollowing(long followId) {
+        Follow follow = followRepository.findById(followId).orElseThrow(()-> new FollowException());
+        User user = follow.getFollowing();
+        return getOneActiveUserById(user.getUserId());
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
     @Override
@@ -71,13 +91,28 @@ public class UserManager implements UserService {
         return getResponseEntity(allUsers);
     }
 
-    // TODO learn Query
-
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<User> getAllFollowersByUserId(long userId) {
+        return  getAllFollowers(userId);
     }
+    @Override
+    public List<User> getAllActiveFollowersByUserId(long userId) {
+        List<User> followers = getAllFollowers(userId);
+        return getResponseEntity(followers);
+    }
+    @Override
+    public List<User> getAllFollowingsByUserId(long userId) {
+        return getAllFollowings(userId);
+    }
+    @Override
+    public List<User> getAllActiveFollowingsByUserId(long userId) {
+        List<User> followings = getAllFollowings(userId);
+        return getResponseEntity(followings);
+    }
+    //-----------------------------------------------------------------------------------------
 
+    // TODO learn Query
+    
     //TODO learn Query
     //TODO Someone may use an existing inactive user name!!!
     @Override
@@ -117,14 +152,35 @@ public class UserManager implements UserService {
 //        return null;
 //    }
 
-    private List<User> getResponseEntity(List<User> followingsAll) {
-        List<User> followingsActiveUsers = new ArrayList<>();
-        for (User user : followingsAll) {
+    private List<User> getAllFollowers(long userId) {
+        User user = userRepository.findById(userId).orElseThrow(()-> new UserException());
+        List<Follow> follows = followRepository.findAllByFollowing_UserId(user.getUserId());
+        List<User> followers= new ArrayList<>();
+        for (Follow follow : follows) {
+            User foundUser = follow.getFollower();
+            followers.add(foundUser);
+        }
+        return followers;
+    }
+    private List<User> getAllFollowings(long userId) {
+        User user = userRepository.findById(userId).orElseThrow(()-> new UserException());
+        List<Follow> follows = followRepository.findAllByFollower_UserId(user.getUserId());
+        List<User> followings= new ArrayList<>();
+        for (Follow follow : follows) {
+            User foundUser = follow.getFollowing();
+            followings.add(foundUser);
+        }
+        return followings;
+    }
+
+    private List<User> getResponseEntity(List<User> users) {
+        List<User> activeUsers = new ArrayList<>();
+        for (User user : users) {
             if (user.getUserStatu() == Statu.ACTIVE) {
-                followingsActiveUsers.add(user);
+                activeUsers.add(user);
             }
         }
-        return followingsActiveUsers;
+        return activeUsers;
     }
 
     private User getOneActiveUserById(long userId) {

@@ -18,13 +18,15 @@ public interface PostService {
 
     List<Post> getAllActivePosts();
 
-    List<Post> findAllByOwnerUserId(long userId);
-    List<Post> findAllByOwner_UserIdAndPostStatu(long userId, Statu statu);
-    List<Post> getAllFollowingsPosts(long userId);
+    List<Post> getAllPostsByUserId(long userId);
+
+    List<Post> getAllActivePostsByUserId(long userId);
+
+    List<Post> getAllFollowingsPostsByUserId(long userId);
 
     List<Post> getAllFollowingsActivePosts(long userId);
 
-
     Post createOnePost(PostCreateRequest request, long userId);
+
 
 }

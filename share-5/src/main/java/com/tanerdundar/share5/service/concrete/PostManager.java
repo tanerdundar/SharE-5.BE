@@ -46,26 +46,26 @@ public class PostManager implements PostService {
         List<Post> posts = postRepository.findAll();
         return getResponseEntity(posts);
     }
+
     @Override
-    public List<Post> findAllByOwnerUserId(long userId) {
+    public List<Post> getAllPostsByUserId(long userId) {
         return postRepository.findAllByOwnerUserId(userId);
-    }
-    @Override
-    public List<Post> findAllByOwner_UserIdAndPostStatu(long userId, Statu statu) {
-        statu=Statu.ACTIVE;
-        return postRepository.findAllByOwner_UserIdAndPostStatu(userId,statu);
     }
 
     @Override
-    public List<Post> getAllFollowingsPosts(long userId) {
-        List<Post> followingsPosts = getFollowingsPosts(userId);
-        return followingsPosts;
+    public List<Post> getAllActivePostsByUserId(long userId) {
+        List<Post> posts = postRepository.findAllByOwnerUserId(userId);
+        return getResponseEntity(posts);
+    }
+
+    @Override
+    public List<Post> getAllFollowingsPostsByUserId(long userId) {
+        return getAllFollowingsPosts(userId);
     }
 
     @Override
     public List<Post> getAllFollowingsActivePosts(long userId) {
-            List<Post> followingsPosts = getFollowingsPosts(userId);
-        return getResponseEntity(followingsPosts);
+        return getResponseEntity(getAllFollowingsPosts(userId));
     }
 
     @Override
@@ -76,7 +76,20 @@ public class PostManager implements PostService {
         return postRepository.save(newPost);
     }
 
-
+    private List<Post> getAllFollowingsPosts(long userId) {
+        User follower = userRepository.findById(userId).orElseThrow(()->new UserException());
+        List<Follow> followMoves = followRepository.findAllByFollower_UserId(follower.getUserId());
+        List<Post> followingsPosts= new ArrayList<>();
+        for (Follow followMove : followMoves) {
+            User followingUser = followMove.getFollowing();  // dikkat
+            long postsOwnerId = followingUser.getUserId();
+            List<Post> ownersPosts = postRepository.findAllByOwnerUserId(postsOwnerId);
+            for (Post ownersPost : ownersPosts) {
+                followingsPosts.add(ownersPost);
+            }
+        }
+        return followingsPosts;
+    }
 
     private Post getOneActivePostById(long postId) {
        Post returnPost = postRepository.findById(postId).orElseThrow(()-> new PostException()) ;
@@ -90,23 +103,9 @@ public class PostManager implements PostService {
         for (Post post : allPosts) {
             if (post.getPostStatu() == Statu.ACTIVE) {
                 activePosts.add(post);
-
             }
         }
         return activePosts;
     }
-    private List<Post> getFollowingsPosts(long userId) {
-    List<Follow> followMoves = followRepository.findAllByFollower_UserId(userId);
-    List<Post> followingsPosts= new ArrayList<>();
-    for (int i=0;i< followMoves.size();i++) {
-        User followingUser = followMoves.get(i).getFollowing();
-        long postsOwnerId = followingUser.getUserId();
-        List<Post> posts = postRepository.findAllByOwner_UserIdAndPostStatu(postsOwnerId,Statu.ACTIVE);
-        for(int j=0;j<posts.size();j++){
-            followingsPosts.add(posts.get(j));
-        }
 
-    }
-       return followingsPosts;
-    }
 }
