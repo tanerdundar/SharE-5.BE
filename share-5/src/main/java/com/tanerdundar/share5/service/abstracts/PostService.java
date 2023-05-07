@@ -19,7 +19,7 @@ public interface PostService {
     List<Post> getAllActivePosts();
 
     List<Post> findAllByOwnerUserId(long userId);
-    List<Post> findAllByOwner_UserIdAndAndPostStatu(long userId, Statu statu);
+    List<Post> findAllByOwner_UserIdAndPostStatu(long userId, Statu statu);
     List<Post> getAllFollowingsPosts(long userId);
 
     List<Post> getAllFollowingsActivePosts(long userId);

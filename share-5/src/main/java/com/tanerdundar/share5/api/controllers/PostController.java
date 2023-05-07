@@ -48,11 +48,11 @@ public class PostController {
         return ResponseEntity.ok(posts);
     }
     @GetMapping("/{userId}/actives")
-    public ResponseEntity findAllByOwner_UserIdAndAndPostStatu(@PathVariable long userId, Statu statu) {
-        List<Post> posts = postService.findAllByOwner_UserIdAndAndPostStatu(userId,statu);
+    public ResponseEntity findAllByOwner_UserIdAndPostStatu(@PathVariable long userId, Statu statu) {
+        List<Post> posts = postService.findAllByOwner_UserIdAndPostStatu(userId,statu);
         return ResponseEntity.ok(posts);
     }
-    @GetMapping("/{userId}/allFollowingPosts")
+    @GetMapping("/{userId}/following_posts")
     public ResponseEntity getAllFollowingsPosts(@PathVariable long userId) {
         List<Post> followingsPosts = postService.getAllFollowingsPosts(userId);
         return ResponseEntity.ok(followingsPosts);

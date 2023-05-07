@@ -1,5 +1,7 @@
 package com.tanerdundar.share5.service.concrete;
 
+import com.tanerdundar.share5.dao.FollowRepository;
+import com.tanerdundar.share5.entities.Follow;
 import com.tanerdundar.share5.entities.Statu;
 import com.tanerdundar.share5.exceptions.PostException;
 import com.tanerdundar.share5.exceptions.UserException;
@@ -27,6 +29,7 @@ public class UserManager implements UserService {
 
     private final UserRepository userRepository;
     private final PostRepository postRepository;
+    private final FollowRepository followRepository;
 
     @Override
     public User getOneUserByUserId(long userId) {
@@ -43,15 +46,23 @@ public class UserManager implements UserService {
     }
     @Override
     public List<User> getFollowingsByUserId(long userId) {
-         User foundUser = getOneActiveUserById(userId);
-         List<User> followingsAll = foundUser.getFollowings();
-         return getResponseEntity(followingsAll);
+        List<Follow> follows = followRepository.findAllByFollower_UserId(userId);
+        List<User> followingUsers= new ArrayList<>();
+        for(int i =0;i< follows.size();i++) {
+            User foundUser = follows.get(i).getFollowing();
+            followingUsers.add(foundUser);
+        }
+         return getResponseEntity(followingUsers);
     }
     @Override
     public List<User> getFollowersByUserId(long userId) {
-         User foundUser = getOneActiveUserById(userId);
-         List<User> followersAll  = foundUser.getFollowers();
-         return getResponseEntity(followersAll);
+        List<Follow> follows = followRepository.findAllByFollowing_UserId(userId);
+        List<User> followingUsers= new ArrayList<>();
+        for(int i =0;i< follows.size();i++) {
+            User foundUser = follows.get(i).getFollower();
+            followingUsers.add(foundUser);
+        }
+        return getResponseEntity(followingUsers);
     }
 
     @Override

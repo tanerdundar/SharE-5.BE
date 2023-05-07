@@ -11,7 +11,7 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post,Long> {
 
     List<Post> findAllByOwnerUserId(long userId);
-    List<Post> findAllByOwner_UserIdAndAndPostStatu(long userId, Statu statu);
+    List<Post> findAllByOwner_UserIdAndPostStatu(long userId, Statu statu);
 
 
 

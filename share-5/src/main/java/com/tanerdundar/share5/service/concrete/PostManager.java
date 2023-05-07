@@ -1,7 +1,9 @@
 package com.tanerdundar.share5.service.concrete;
 
+import com.tanerdundar.share5.dao.FollowRepository;
 import com.tanerdundar.share5.dao.PostRepository;
 import com.tanerdundar.share5.dao.UserRepository;
+import com.tanerdundar.share5.entities.Follow;
 import com.tanerdundar.share5.entities.Post;
 import com.tanerdundar.share5.entities.Statu;
 import com.tanerdundar.share5.entities.User;
@@ -21,6 +23,7 @@ public class PostManager implements PostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final FollowRepository followRepository;
 
 
     @Override
@@ -48,9 +51,9 @@ public class PostManager implements PostService {
         return postRepository.findAllByOwnerUserId(userId);
     }
     @Override
-    public List<Post> findAllByOwner_UserIdAndAndPostStatu(long userId, Statu statu) {
+    public List<Post> findAllByOwner_UserIdAndPostStatu(long userId, Statu statu) {
         statu=Statu.ACTIVE;
-        return postRepository.findAllByOwner_UserIdAndAndPostStatu(userId,statu);
+        return postRepository.findAllByOwner_UserIdAndPostStatu(userId,statu);
     }
 
     @Override
@@ -83,25 +86,27 @@ public class PostManager implements PostService {
     }
 
     private List<Post> getResponseEntity(List<Post> allPosts) {
-        System.out.println("çalıştı");
         List<Post> activePosts = new ArrayList<>();
         for (Post post : allPosts) {
             if (post.getPostStatu() == Statu.ACTIVE) {
                 activePosts.add(post);
-                System.out.println("çalıştı22");
+
             }
         }
         return activePosts;
     }
     private List<Post> getFollowingsPosts(long userId) {
-        User flowOwner = userRepository.findById(userId).orElseThrow(()-> new UserException());
-        List<User> followingUsers= flowOwner.getFollowings();
-        List<Post> followingsPosts= new ArrayList<>();
-        for (User followingUser : followingUsers) {
-            for (int j = 0; j < followingUser.getPosts().size(); j++) {
-                followingsPosts.add(followingUser.getPosts().get(j));
-            }
+    List<Follow> followMoves = followRepository.findAllByFollower_UserId(userId);
+    List<Post> followingsPosts= new ArrayList<>();
+    for (int i=0;i< followMoves.size();i++) {
+        User followingUser = followMoves.get(i).getFollowing();
+        long postsOwnerId = followingUser.getUserId();
+        List<Post> posts = postRepository.findAllByOwner_UserIdAndPostStatu(postsOwnerId,Statu.ACTIVE);
+        for(int j=0;j<posts.size();j++){
+            followingsPosts.add(posts.get(j));
         }
-        return followingsPosts;
+
+    }
+       return followingsPosts;
     }
 }

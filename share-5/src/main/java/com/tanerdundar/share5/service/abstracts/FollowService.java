@@ -8,5 +8,7 @@ import java.util.List;
 public interface FollowService  {
     Follow createOneFollowByFollowerId(FollowCreateRequest request, long userId);
 
-    List<Follow> getActiveFollowerById(long userId);
+    List<Follow> getActiveFollowsByFollowerId(long followerId);
+
+    List<Follow> getActiveFollowsByFollowingId(long followingId);
 }

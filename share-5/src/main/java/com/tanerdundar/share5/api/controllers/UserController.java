@@ -36,7 +36,6 @@ public class UserController {
     }
     @GetMapping("/{userId}/followings")
     public ResponseEntity getAllFollowingsByUserId(@PathVariable long userId) {
-       // List<Integer> followingsId= followService.get
         List<User> followings = userService.getFollowingsByUserId(userId);
         return ResponseEntity.ok(followings);
     }

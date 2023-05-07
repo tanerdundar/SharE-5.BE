@@ -25,10 +25,15 @@ public class FollowController {
       return ResponseEntity.ok(follow);
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity getActiveFollowersByUserId(@PathVariable long userId) {
-        List<Follow> follows = followService.getActiveFollowerById(userId);
+    @GetMapping("/{followerId}/followings")
+    public ResponseEntity getActiveFollowsByFollowerId(@PathVariable long followerId) {
+        List<Follow> follows = followService.getActiveFollowsByFollowerId(followerId);
         return ResponseEntity.ok(follows);
+    }
+    @GetMapping("/{followingId}/followers")
+    public ResponseEntity getActiveFollowsByFollowingId(@PathVariable long followingId) {
+        List<Follow> followings = followService.getActiveFollowsByFollowingId(followingId);
+        return ResponseEntity.ok(followings);
     }
 
 

@@ -30,8 +30,14 @@ public class FollowManager implements FollowService {
     }
 
     @Override
-    public List<Follow> getActiveFollowerById(long userId) {
-        List<Follow> followers =followRepository.findAllByFollower(userId);
-        return followers;
+    public List<Follow> getActiveFollowsByFollowerId(long followId) {
+        List<Follow> follows =followRepository.findAllByFollower_UserId(followId);
+        return follows;
+    }
+
+    @Override
+    public List<Follow> getActiveFollowsByFollowingId(long followingId) {
+        List<Follow> followings =followRepository.findAllByFollowing_UserId(followingId);
+        return followings;
     }
 }
