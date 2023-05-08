@@ -2,6 +2,7 @@ package com.tanerdundar.share5.api.controllers;
 
 import com.tanerdundar.share5.entities.User;
 import com.tanerdundar.share5.requests.user.UserCreateRequest;
+import com.tanerdundar.share5.requests.user.UserUpdateRequest;
 import com.tanerdundar.share5.service.abstracts.FollowService;
 import com.tanerdundar.share5.service.abstracts.UserService;
 import jakarta.validation.Valid;
@@ -9,7 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/users")
@@ -86,7 +89,7 @@ public class UserController {
         return ResponseEntity.ok(followings);
     }
     @GetMapping("/{userId}/followings")
-    public ResponseEntity getAllActiveFollowingsByUserId(@PathVariable long userId) {
+    public ResponseEntity getAllActiveFollowingsByUserId(@PathVariable long userId ) {
         List<User> followings = userService.getAllActiveFollowingsByUserId(userId);
         return ResponseEntity.ok(followings);
     }
@@ -99,5 +102,9 @@ public class UserController {
     public void deleteOneUserByUserIdFromDB(@PathVariable long userId) {
         userService.deleteOneUserByUserIdFromDB(userId);
     }
-
+    @PutMapping("/userId")
+    public ResponseEntity deleteOneUserByUserId( @PathVariable  long userId) {
+        User user = userService.deleteOneUserByUserId(userId);
+        return ResponseEntity.ok(user);
+    }
 }

@@ -12,4 +12,6 @@ import static com.tanerdundar.share5.entities.Statu.ACTIVE;
 @Repository
 public interface UserRepository extends JpaRepository <User,Long> {
 
+
+
 }

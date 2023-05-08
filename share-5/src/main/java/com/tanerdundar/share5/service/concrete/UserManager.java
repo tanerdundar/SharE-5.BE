@@ -11,7 +11,7 @@ import com.tanerdundar.share5.dao.UserRepository;
 import com.tanerdundar.share5.entities.Post;
 import com.tanerdundar.share5.entities.User;
 import com.tanerdundar.share5.requests.user.UserCreateRequest;
-import com.tanerdundar.share5.requests.user.UserToInactiveRequest;
+import com.tanerdundar.share5.requests.user.UserUpdateRequest;
 import com.tanerdundar.share5.service.abstracts.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -123,11 +123,11 @@ public class UserManager implements UserService {
         if(isValidEmail(request.getEMail())) {
             for (User user : users) {
                 if (request.getEMail().equals(user.getEMail())) {
-                    throw new UserException("Existing email adress...");
+                    throw new UserException("Existing email address...");
                 }
             }
         } else{
-            throw new UserException("Please type valid email adress...");
+            throw new UserException("Please type valid email address...");
         }
         return  userRepository.save(request.createOneUser());
     }
@@ -147,6 +147,15 @@ public class UserManager implements UserService {
         postDeleter(postRepository.findAllByOwnerUserId(userId));
         userRepository.deleteById(userId);
     }
+
+    @Override
+    public User deleteOneUserByUserId(long userId) {
+        User user = getOneActiveUserById(userId);
+        user.setUserStatu(Statu.INACTIVE);
+        return userRepository.save(user);
+    }
+
+
 
 
     //TODO user ve post arasındaki bağlantı kurulacak

@@ -1,16 +1,11 @@
 package com.tanerdundar.share5.service.abstracts;
 
-import com.tanerdundar.share5.entities.Post;
 import com.tanerdundar.share5.entities.User;
 import com.tanerdundar.share5.requests.user.UserCreateRequest;
-import com.tanerdundar.share5.requests.user.UserFollowRequest;
-import com.tanerdundar.share5.requests.user.UserToInactiveRequest;
-import org.springframework.http.ResponseEntity;
+import com.tanerdundar.share5.requests.user.UserUpdateRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public interface UserService {
@@ -44,5 +39,7 @@ public interface UserService {
 
     void deleteOneUserByUserIdFromDB(long userId);
 
+
+    User deleteOneUserByUserId(long userId);
 
 }
