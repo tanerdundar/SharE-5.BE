@@ -20,12 +20,7 @@ public interface FollowService  {
     List<Follow> getAllFollowsByFollowerId(long followerId);
 
     List<Follow> getAllActiveFollowsByFollowerId(long followerId);
-
-
-//------------------------------------------------------------------------
-
-
     Follow createOneFollowByFollowerId(FollowCreateRequest request, long userId);
 
-
+    void deleteOneFollowByFollowIdFormDB(long followId);
 }

@@ -27,6 +27,5 @@ public interface PostService {
     List<Post> getAllFollowingsActivePosts(long userId);
 
     Post createOnePost(PostCreateRequest request, long userId);
-
-
+    void deleteOnePostByPostIdFromDB(long postId);
 }

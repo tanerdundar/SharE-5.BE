@@ -40,9 +40,6 @@ public interface UserService {
 
     List<User> getAllFollowingsByUserId(long userId);
     List<User> getAllActiveFollowingsByUserId(long userId);
-
-    //-----------------------------------------------------------------------------------
-
     User createOneUser(UserCreateRequest request);
 
     void deleteOneUserByUserIdFromDB(long userId);

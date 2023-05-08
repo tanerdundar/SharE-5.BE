@@ -109,12 +109,7 @@ public class UserManager implements UserService {
         List<User> followings = getAllFollowings(userId);
         return getResponseEntity(followings);
     }
-    //-----------------------------------------------------------------------------------------
 
-    // TODO learn Query
-    
-    //TODO learn Query
-    //TODO Someone may use an existing inactive user name!!!
     @Override
     public User createOneUser(UserCreateRequest request) {
         List<User> users = userRepository.findAll();
@@ -137,20 +132,24 @@ public class UserManager implements UserService {
         return  userRepository.save(request.createOneUser());
     }
 
+    //-----------------------------------------------------------------------------------------
+
+    // TODO learn Query
+    
+    //TODO learn Query
+    //TODO Someone may use an existing inactive user name!!!
+
+
     @Override
     public void deleteOneUserByUserIdFromDB(long userId) {
+        followDeleter(followRepository.findAllByFollower_UserId(userId));
+        followDeleter(followRepository.findAllByFollowing_UserId(userId));
+        postDeleter(postRepository.findAllByOwnerUserId(userId));
         userRepository.deleteById(userId);
     }
 
 
     //TODO user ve post arasındaki bağlantı kurulacak
-//    @Override
-//    public User toInactiveAUser(long userId, UserToInactiveRequest request) {
-//        User updateUser = getOneUserByUserId(userId);
-//        List<Post> userPosts =
-//
-//        return null;
-//    }
 
     private List<User> getAllFollowers(long userId) {
         User user = userRepository.findById(userId).orElseThrow(()-> new UserException());
@@ -198,6 +197,17 @@ public class UserManager implements UserService {
             isValid = false;
         }
         return isValid;
+    }
+
+    private void followDeleter(List<Follow> list) {
+        for (Follow follow : list) {
+            followRepository.deleteById(follow.getFollowId());
+        }
+    }
+    private void postDeleter(List<Post> list) {
+        for (Post post : list) {
+            postRepository.deleteById(post.getPostId());
+        }
     }
 
 }

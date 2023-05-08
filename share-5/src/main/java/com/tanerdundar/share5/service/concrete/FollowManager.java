@@ -65,14 +65,6 @@ public class FollowManager implements FollowService {
         List<Follow> follows =followRepository.findAllByFollower_UserId(followerId);
         return getResponseEntity(follows);
     }
-//------------------------------------------------------------------------
-
-
-
-
-
-
-
     @Override
     public Follow createOneFollowByFollowerId(FollowCreateRequest request, long userId) {
         Follow follow = request.createOneFollow();
@@ -81,6 +73,11 @@ public class FollowManager implements FollowService {
         follow.setFollower(follower);
         follow.setFollowing(following);
         return followRepository.save(follow);
+    }
+
+    @Override
+    public void deleteOneFollowByFollowIdFormDB(long followId) {
+        followRepository.deleteById(followId);
     }
 
     private Follow getOneActiveFollowById(long followId) {

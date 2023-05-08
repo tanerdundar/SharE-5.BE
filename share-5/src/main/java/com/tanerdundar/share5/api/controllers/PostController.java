@@ -21,28 +21,28 @@ public class PostController {
 
     private final PostService postService;
 
-    @GetMapping("/{postId}")
+    @GetMapping("/{postId}/inactive")
     public ResponseEntity getOnePostByPostId(@PathVariable long postId) {
         Post post = postService.getOnePostByPostId(postId);
         return ResponseEntity.ok(post);
     }
-    @GetMapping("/{postId}/active")
+    @GetMapping("/{postId}")
     public ResponseEntity getOneActivePostByPostId(@PathVariable long postId) {
         Post post = postService.getOneActivePostByPostId(postId);
         return ResponseEntity.ok(post);
     }
 
-    @GetMapping
+    @GetMapping("/whole")
     public ResponseEntity getAllPosts() {
         List<Post> allPosts =postService.getAllPosts();
         return ResponseEntity.ok(allPosts);
     }
-    @GetMapping("/actives")
+    @GetMapping("/all")
     public ResponseEntity getAllActivePosts(){
         List<Post> allActivePosts= postService.getAllActivePosts();
         return ResponseEntity.ok(allActivePosts);
     }
-    @GetMapping("/{userId}/inactives")
+    @GetMapping("/{userId}/inactive/posts")
     public ResponseEntity getAllPostsByUserId(@PathVariable long userId){
         List<Post> posts = postService.getAllPostsByUserId(userId);
         return ResponseEntity.ok(posts);
@@ -67,5 +67,9 @@ public class PostController {
     public ResponseEntity createOnePost(@Valid @RequestBody PostCreateRequest request, @PathVariable long userId) {
         Post post = postService.createOnePost(request,userId);
         return ResponseEntity.ok(post);
+    }
+    @DeleteMapping("/{postId}")
+    public void deleteOnePostByPostIdFromDB(@PathVariable long postId){
+        postService.deleteOnePostByPostIdFromDB(postId);
     }
 }

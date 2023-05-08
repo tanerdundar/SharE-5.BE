@@ -26,18 +26,18 @@ public class FollowController {
         Follow follow = followService.getOneActiveFollowByFollowId(followId);
         return ResponseEntity.ok(follow);
     }
-    @GetMapping
+    @GetMapping("/whole")
     public ResponseEntity getAllFollows() {
         List<Follow> follows = followService.getAllFollows();
         return ResponseEntity.ok(follows);
     }
-    @GetMapping("/actives")
+    @GetMapping("/all")
     public ResponseEntity getAllActiveFollows() {
         List<Follow> follows = followService.getAllActiveFollows();
         return ResponseEntity.ok(follows);
     }
 
-    @GetMapping("/{followingId}/followers/inactives")
+    @GetMapping("/{followingId}/followers/inactive")
     public ResponseEntity getAllFollowsByFollowingId(@PathVariable long followingId) {
         List<Follow> followings = followService.getAllFollowsByFollowingId(followingId);
         return ResponseEntity.ok(followings);
@@ -47,7 +47,7 @@ public class FollowController {
         List<Follow> followings = followService.getAllActiveFollowsByFollowingId(followingId);
         return ResponseEntity.ok(followings);
     }
-    @GetMapping("/{followerId}/followings/inactives")
+    @GetMapping("/{followerId}/followings/inactive")
     public ResponseEntity getAllFollowsByFollowerId(@PathVariable long followerId) {
         List<Follow> followers = followService.getAllFollowsByFollowerId(followerId);
         return ResponseEntity.ok(followers);
@@ -58,16 +58,6 @@ public class FollowController {
         List<Follow> follows = followService.getAllActiveFollowsByFollowerId(followerId);
         return ResponseEntity.ok(follows);
     }
-
-//------------------------------------------------------------------------
-
-
-
-
-
-
-
-
     @PostMapping("/{followerId}")
     public ResponseEntity createOneFollowByFollowerId(@RequestBody FollowCreateRequest request, @PathVariable long followerId){
         if(request.getFollowingId()==followerId){
@@ -75,5 +65,9 @@ public class FollowController {
         }
         Follow follow = followService.createOneFollowByFollowerId(request,followerId);
         return ResponseEntity.ok(follow);
+    }
+    @DeleteMapping("/{followId}")
+    public void deleteOneFollowByFollowIdFromDB(@PathVariable long followId){
+        followService.deleteOneFollowByFollowIdFormDB(followId);
     }
 }

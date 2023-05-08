@@ -12,8 +12,6 @@ import lombok.NonNull;
 @Data
 public class PostCreateRequest {
 
-
-
     private String content;
 
     public Post createOnePost() {

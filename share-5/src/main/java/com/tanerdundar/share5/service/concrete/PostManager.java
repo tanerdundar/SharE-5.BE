@@ -72,8 +72,12 @@ public class PostManager implements PostService {
     public Post createOnePost(PostCreateRequest request, long userId) {
         User postOwner = userRepository.findById(userId).orElseThrow(()-> new UserException());
         Post newPost = request.createOnePost();
-        newPost.setOwner(postOwner);
         return postRepository.save(newPost);
+    }
+
+    @Override
+    public void deleteOnePostByPostIdFromDB(long postId) {
+        postRepository.deleteById(postId);
     }
 
     private List<Post> getAllFollowingsPosts(long userId) {
